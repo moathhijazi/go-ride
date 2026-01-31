@@ -25,7 +25,7 @@ export function ZodInput<T extends FieldValues>({
       render={({ field: { onChange, onBlur, value }, fieldState }) => (
         <View style={{ marginBottom: 16 }}>
           {label && (
-            <Text style={{ marginBottom: 6, fontWeight: "600" }}>
+            <Text style={{ marginBottom: 6, fontWeight: "600" , color : fieldState.error ? "#ef4444" : "black"}}>
               {label}
             </Text>
           )}

@@ -13,7 +13,7 @@ import { router } from 'expo-router';
 
 import { useApi } from '@/hooks/use-api';
 
-export default function login() {
+export default function index() {
   const { control, handleSubmit } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
