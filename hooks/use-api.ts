@@ -13,7 +13,7 @@ const api = axios.create({
 // Inject the bearer token
 
 api.interceptors.request.use(async (config: any) => {
-  const token = await Secure.getItemAsync('accessToken');
+  const token = await Secure.getItemAsync('secure-access-token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

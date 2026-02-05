@@ -1,10 +1,12 @@
 export type Response = {
     data : object;
     error : error;
+    message : string;
+    status : number;
 }
 
 type error = {
-    data : object;
-    message : string;
-    status : number;
+    data : {
+        message : string;
+    }
 }

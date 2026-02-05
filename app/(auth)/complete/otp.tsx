@@ -10,6 +10,7 @@ import { toast } from 'sonner-native';
 import { router } from 'expo-router';
 
 import { useApi } from '@/hooks/use-api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function index() {
   const { control, handleSubmit } = useForm<EmailOTP>({
@@ -25,12 +26,14 @@ export default function index() {
 
   const onSubmit = (data: EmailOTP) => {
     setLoading(true);
-    post('/verify-email', data).then((res: any) => {
+    post('/verify-phone-number', data).then((res: any) => {
       if (res.error) {
         toast.error(res.error.message);
       }else{
         toast.success(res.data.message);
-        router.push('/auth/complete/rest');
+        AsyncStorage.clear().then(() => {
+          router.replace('/(app)')
+        });
       }
       setLoading(false);
     });
@@ -40,8 +43,8 @@ export default function index() {
     <ScrollView contentContainerClassName="flex-1">
       <View className="flex-1 p-4">
         <View className="gap-y-2">
-          <Text className="text-3xl">Verify your email</Text>
-          <Text className="text-zinc-600">We've sent you an email.</Text>
+          <Text className="text-3xl">Verify your phone number</Text>
+          <Text className="text-zinc-600">We've sent you an sms.</Text>
         </View>
         <View className="mt-16 gap-y-4">
           <View>
@@ -49,7 +52,7 @@ export default function index() {
               control={control}
               editable={!loading}
               name="otp"
-              label="Email OTP 6 numbers"
+              label="OTP 6 numbers"
               placeholder="012345"
               keyboardType="numeric"
               autoCapitalize="none"
@@ -65,12 +68,12 @@ export default function index() {
 
       <View className="gap-y-2 p-4">
         <View className="flex w-full flex-row items-center justify-between">
-          <Text className="text-md font-medium">Didn't receive email ?</Text>
+          <Text className="text-md font-medium">Didn't receive sms ?</Text>
           <Button
             disabled={loading}
             variant={'link'}
             className="active:bg-zinc-100"
-            onPress={() => router.replace('/auth/register')}>
+            onPress={() => router.replace('/(auth)/register')}>
             <Text className="font-bold">Send again (0:45)</Text>
           </Button>
         </View>
@@ -82,7 +85,7 @@ export default function index() {
           )}
         </Button>
         <Text className="text-center text-xs text-zinc-500">
-          Please check you email inbox you will findout our team sent you a verification email with 6-digits.
+          Please check you sms inbox you will findout our team sent you a verification code with 6-digits.
         </Text>
       </View>
     </ScrollView>

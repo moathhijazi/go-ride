@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": ".",
-    "slug": ".",
+    "name": "Go Ride",
+    "slug": "go-ride",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": ".",
+    "scheme": "goride",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -17,9 +17,21 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.jojo-follow.go-ride",
+      "config": {
+        "googleMapsApiKey": "AIzaSyCTgFNGrIdx0BTOABVcuZq9ZZiFhV35nVk"
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCTgFNGrIdx0BTOABVcuZq9ZZiFhV35nVk"
+        }
+      },
       "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
@@ -36,6 +48,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ba35bc03-3ac6-4984-bb60-8bbd8736c0bf"
+      }
+    },
+    "owner": "jojo-follow"
   }
 }

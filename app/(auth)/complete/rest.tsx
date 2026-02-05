@@ -28,11 +28,10 @@ export default function rest() {
     setLoading(true);
     post('/complete-register', data).then((res: any) => {
       if (res.error) {
-        console.log(res.error);
-        
         toast.error(res.error.message);
       }else{
         toast.success(res.data.message);
+        router.push('/(auth)/complete/otp')
       }
       setLoading(false);
     });
@@ -85,6 +84,7 @@ export default function rest() {
               keyboardType="numeric"
               autoCapitalize="none"
               editable={!loading}
+              maxLength={9}
             />
           </View>
         </View>

@@ -5,17 +5,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginForm } from '@/lib/validation/auth-schema';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner-native';
+import * as Secure from "expo-secure-store"
 
 import Google from '@/components/icons/google';
 import Github from '@/components/icons/github';
 import { router } from 'expo-router';
 
-import { toast } from 'sonner-native';
 import { useApi } from '@/hooks/use-api';
 
-import * as Secure from 'expo-secure-store';
 
-export default function register() {
+export default function login() {
   const { control, handleSubmit } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -30,18 +30,16 @@ export default function register() {
 
   const onSubmit = (data: LoginForm) => {
     setLoading(true);
-    post('/register', data).then(async (res: any) => {
+    post('/login', data).then(async (res: any) => {
       if (res.error) {
         toast.error(res.error.message);
-      } else {
-        toast.success(res.data.message);
-        const { accessToken, refreshToken } = res.data.user;
-        await Secure.setItemAsync('accessToken', accessToken).then(async () => {
-          await Secure.setItemAsync('refreshToken', refreshToken).then(() => {
-            router.push('/auth/complete/email');
+      }
+     const { accessToken, refreshToken } = res.data.user;
+        await Secure.setItemAsync('secure-access-token', accessToken).then(async () => {
+          await Secure.setItemAsync('secure-refresh-token', refreshToken).then(async () => {
+            router.push('/(app)');
           });
         });
-      }
       setLoading(false);
     });
   };
@@ -50,7 +48,7 @@ export default function register() {
     <ScrollView contentContainerClassName="flex-1">
       <View className="flex-1 p-4">
         <View className="gap-y-2">
-          <Text className="text-3xl">Create new account</Text>
+          <Text className="text-3xl">Login to your account</Text>
           <Text className="text-zinc-600">Enter your email and password below.</Text>
         </View>
         <View className="mt-16 gap-y-4">
@@ -78,7 +76,11 @@ export default function register() {
             />
           </View>
         </View>
-
+        <View className="flex flex-row justify-center">
+          <Button variant={'link'}>
+            <Text className="font-bold">Forgot your password?</Text>
+          </Button>
+        </View>
         <View className="relative mt-6 border-t-[.4px] p-2">
           <Text className="absolute -top-6 left-[160] bg-white p-2 text-lg">Or</Text>
         </View>
@@ -100,25 +102,25 @@ export default function register() {
 
       <View className="gap-y-2 p-4">
         <View className="flex w-full flex-row items-center justify-between">
-          <Text className="text-md font-medium">Already have an account ?</Text>
+          <Text className="text-md font-medium">Dont have an account ?</Text>
           <Button
             disabled={loading}
             variant={'link'}
             className="active:bg-zinc-100"
-            onPress={() => router.replace('/auth')}>
-            <Text className="font-bold">Login</Text>
+            onPress={() => router.replace('/(auth)/register')}>
+            <Text className="font-bold">Create account</Text>
           </Button>
         </View>
         <Button disabled={loading} onPress={handleSubmit(onSubmit)}>
           {loading ? (
             <ActivityIndicator size={'small'} color={'white'} />
           ) : (
-            <Text className="text-white">Create account</Text>
+            <Text className="text-white">Login</Text>
           )}
         </Button>
         <Text className="text-center text-xs text-zinc-500">
-          By registering you accept that we going to use your phone number to call you or send sms
-          or whatsapp messages.
+          By login you accept that we going to use your phone number to call you or send sms or
+          whatsapp messages.
         </Text>
       </View>
     </ScrollView>
